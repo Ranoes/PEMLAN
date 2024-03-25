@@ -57,40 +57,54 @@ class MataKuliah {
 public class KHSApp {
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
+        List<Mahasiswa> daftarMahasiswa = new ArrayList<>();
 
-        System.out.print("Masukkan NIM Mahasiswa: ");
-        String nim = scanner.nextLine();
-        System.out.print("Masukkan Nama Mahasiswa: ");
-        String nama = scanner.nextLine();
+        boolean checkTambahMahasiswa = true;
+        while (checkTambahMahasiswa) {
+            System.out.print("Masukkan NIM Mahasiswa: ");
+            String nim = scanner.nextLine();
+            System.out.print("Masukkan Nama Mahasiswa: ");
+            String nama = scanner.nextLine();
 
-        Mahasiswa mahasiswa = new Mahasiswa(nim, nama);
+            Mahasiswa mahasiswa = new Mahasiswa(nim, nama);
 
-        boolean validator = true;
-        while (validator) {
-            System.out.print("Masukkan Kode Mata Kuliah: ");
-            String kodeMK = scanner.nextLine();
-            System.out.print("Masukkan Nama Mata Kuliah: ");
-            String namaMK = scanner.nextLine();
-            System.out.print("Masukkan Nilai Angka: ");
-            int nilaiAngka = scanner.nextInt();
-            scanner.nextLine(); // Membersihkan newline
+            boolean checkTambahMataKuliah = true;
+            while (checkTambahMataKuliah) {
+                System.out.print("Masukkan Kode Mata Kuliah: ");
+                String kodeMK = scanner.nextLine();
+                System.out.print("Masukkan Nama Mata Kuliah: ");
+                String namaMK = scanner.nextLine();
+                System.out.print("Masukkan Nilai (Angka): ");
+                int nilaiAngka = scanner.nextInt();
+                scanner.nextLine(); // Membersihkan newline
 
-            MataKuliah mataKuliah = new MataKuliah(kodeMK, namaMK, nilaiAngka);
-            mahasiswa.tambahMataKuliah(mataKuliah);
+                MataKuliah mataKuliah = new MataKuliah(kodeMK, namaMK, nilaiAngka);
+                mahasiswa.tambahMataKuliah(mataKuliah);
 
-            System.out.print("Apakah ingin memasukkan mata kuliah lagi? (y/n): ");
-            String jawaban = scanner.nextLine();
-            if (!jawaban.equalsIgnoreCase("y")) {
-                validator = false;
+                System.out.print("Apakah ingin menambahkan mata kuliah lagi? (y/n): ");
+                String input = scanner.nextLine();
+                if (!input.equalsIgnoreCase("y")) {
+                    checkTambahMataKuliah = false;
+                }
+            }
+
+            daftarMahasiswa.add(mahasiswa);
+
+            System.out.print("Apakah ingin menambahkan mahasiswa lagi? (y/n): ");
+            String inputMahasiswa = scanner.nextLine();
+            if (!inputMahasiswa.equalsIgnoreCase("y")) {
+                checkTambahMahasiswa = false;
             }
         }
 
-        // Cetak KHS
-        System.out.println("\nKartu Hasil Studi (KHS) Mahasiswa");
-        System.out.println("NIM: " + mahasiswa.nim);
-        System.out.println("Nama: " + mahasiswa.nama);
-        for (MataKuliah mataKuliah : mahasiswa.mataKuliahList) {
-            System.out.println("Mata Kuliah: " + mataKuliah.kodeMK + " - " + mataKuliah.namaMK + " - Nilai: "+ mataKuliah.konversiNilaiABCD());
+        // Cetak KHS untuk setiap mahasiswa
+        for (Mahasiswa mahasiswa : daftarMahasiswa) {
+            System.out.println("\nKartu Hasil Studi (KHS) Mahasiswa");
+            System.out.println("NIM: " + mahasiswa.nim);
+            System.out.println("Nama: " + mahasiswa.nama);
+            for (MataKuliah mataKuliah : mahasiswa.mataKuliahList) {
+                System.out.println("Mata Kuliah: " + mataKuliah.kodeMK + " - " + mataKuliah.namaMK + " - Nilai Huruf: " + mataKuliah.konversiNilaiABCD());
+            }
         }
 
         scanner.close();
